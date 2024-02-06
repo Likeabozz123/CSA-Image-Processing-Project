@@ -6,13 +6,18 @@ public class ImageProcessing {
 
     private String imageName;
     private TweakedAPImage image;
+    private boolean running = true;
     private final Scanner scanner = new Scanner(System.in);
 
     public void run() {
         selectImage();
 
         image = new TweakedAPImage(imageName);
-        image.draw();
+
+        while (running) {
+            presentImageProcessingOptions();
+            image.draw();
+        }
 
     }
 
@@ -51,9 +56,10 @@ public class ImageProcessing {
         System.out.println("14. Blur image");
         System.out.println("15. Shrink image");
         System.out.println("16. Enlarge image");
+        System.out.println("17. Quit");
 
         int optionNum = scanner.nextInt();
-        
+
         if (optionNum == 1) {
             convertBlackWhite();
         }
@@ -105,6 +111,7 @@ public class ImageProcessing {
         if (optionNum == 16) {
             enlargenImage();
         }
+        if (optionNum == 17) running = false;
 
     }
 
