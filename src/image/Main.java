@@ -1,13 +1,15 @@
 package image;
 
-import images.APImage;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        TweakedAPImage image = new TweakedAPImage("smokey.jpg");
-        image.draw();
+        ImageProcessing imageProcessing = new ImageProcessing();
+        imageProcessing.run();
+
+
     }
 
 
