@@ -2,6 +2,7 @@ package image;
 
 import images.Pixel;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class ImageProcessing {
@@ -255,7 +256,31 @@ public class ImageProcessing {
         }
     }
 
-    public void posterizeImage() {}
+    public void posterizeImage() {
+        Random random = new Random();
+        int newRed = random.nextInt(256);
+        int newGreen = random.nextInt(256);
+        int newBlue = random.nextInt(256);
+        for (Pixel pixel : image) {
+            int red = pixel.getRed();
+            int green = pixel.getGreen();
+            int blue = pixel.getBlue();
+            int avgColors = (red + green + blue) / 3;
+
+            if (avgColors > 128) {
+                pixel.setRed(255);
+                pixel.setGreen(255);
+                pixel.setBlue(255);
+            } else {
+
+                pixel.setRed(newRed);
+                pixel.setGreen(newGreen);
+                pixel.setBlue(newBlue);
+            }
+
+        }
+
+    }
 
     public void convertPhotographicNegative() {}
 
