@@ -247,7 +247,7 @@ public class ImageProcessing {
     public void applyColorFilter() {
 
         for (Pixel pixel : image) {
-            int red = Math.min(pixel.getRed() + 20, 255);
+            int red = Math.min(pixel.getRed() + 100, 255);
             int green = pixel.getGreen();
             int blue = pixel.getBlue();
             pixel.setRed(red);
