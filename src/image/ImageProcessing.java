@@ -103,7 +103,7 @@ public class ImageProcessing {
             convertPhotographicNegative();
         }
         if (optionNum == 13) {
-            sharpenImage();
+            sharpenImage(20, 10);
         }
         if (optionNum == 14) {
             blurImage();
@@ -282,9 +282,42 @@ public class ImageProcessing {
 
     }
 
-    public void convertPhotographicNegative() {}
+    public void convertPhotographicNegative() {
+        convertGrayscale();
+        for (Pixel pixel : image) {
+            int red = pixel.getRed();
+            int green = pixel.getGreen();
+            int blue = pixel.getBlue();
+            pixel.setRed(255 - red);
+            pixel.setGreen(255 - green);
+            pixel.setBlue(255 - blue);
+        }
 
-    public void sharpenImage() {}
+    }
+
+    public void sharpenImage(int degree, int threshold) {
+        for (int y = 0; y < image.getHeight() - 1; y++) {
+            for (int x = 1; x < image.getWidth(); x++) {
+                Pixel cornerPixel = image.getPixel(x - 1, y);
+                Pixel rightPixel = image.getPixel(x, y);
+                Pixel bottomPixel = image.getPixel(x, y + 1);
+
+                int cornerAvg = (cornerPixel.getRed() + cornerPixel.getGreen() + cornerPixel.getBlue()) / 3;
+                int rightAvg = (rightPixel.getRed() + rightPixel.getGreen() + rightPixel.getBlue()) / 3;
+                int bottomAvg = (bottomPixel.getRed() + bottomPixel.getGreen() + bottomPixel.getBlue()) / 3;
+
+                if (Math.abs(rightAvg - cornerAvg) <= threshold || Math.abs(rightAvg - bottomAvg) <= threshold) {
+                    int red = rightPixel.getRed();
+                    int green = rightPixel.getGreen();
+                    int blue = rightPixel.getBlue();
+
+                    rightPixel.setRed(Math.min(red + degree, 255));
+                    rightPixel.setGreen(Math.min(green + degree, 255));
+                    rightPixel.setBlue(Math.min(blue + degree, 255));
+                }
+            }
+        }
+    }
 
     public void blurImage() {}
 
