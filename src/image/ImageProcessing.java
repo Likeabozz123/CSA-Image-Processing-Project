@@ -109,7 +109,7 @@ public class ImageProcessing {
             blurImage();
         }
         if (optionNum == 15) {
-            shrinkImage();
+            shrinkImage(3);
         }
         if (optionNum == 16) {
             enlargenImage();
@@ -321,7 +321,38 @@ public class ImageProcessing {
 
     public void blurImage() {}
 
-    public void shrinkImage() {}
+    public void shrinkImage(int shrinkFactor) {
+        int newWidth = image.getWidth() / shrinkFactor;
+        int newHeight = image.getHeight() / shrinkFactor;
+
+        TweakedAPImage shrunkImage = new TweakedAPImage(newWidth, newHeight);
+
+        for (int y = 0; y < newHeight; y++) {
+            for (int x = 0; x < newWidth; x++) {
+                int totalRed = 0;
+                int totalGreen = 0;
+                int totalBlue = 0;
+
+                for (int dy = 0; dy < shrinkFactor; dy++) {
+                    for (int dx = 0; dx < shrinkFactor; dx++) {
+                        Pixel original = image.getPixel(x * shrinkFactor + dx, y * shrinkFactor + dy);
+                        totalRed += original.getRed();
+                        totalGreen += original.getGreen();
+                        totalBlue += original.getBlue();
+                    }
+                }
+
+                int shrunkRed = totalRed / (shrinkFactor * shrinkFactor);
+                int shrunkGreen = totalGreen / (shrinkFactor * shrinkFactor);
+                int shrunkBlue = totalBlue / (shrinkFactor * shrinkFactor);
+
+
+                Pixel shrunkPixel = new Pixel(shrunkRed, shrunkGreen, shrunkBlue);
+                shrunkImage.setPixel(x, y, shrunkPixel);
+            }
+        }
+        image = shrunkImage;
+    }
 
     public void enlargenImage() {}
 }
