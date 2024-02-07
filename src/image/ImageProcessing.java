@@ -319,9 +319,35 @@ public class ImageProcessing {
         }
     }
 
-    public void blurImage() {}
+    public void blurImage() {
 
-    public void shrinkImage() {}
+        for (int y = 1; y < image.getHeight() - 2; y++) {
+            for (int x = 1; x < image.getWidth() - 2; x++) {
+                Pixel topPixel = image.getPixel(x, y - 1);
+                Pixel bottomPixel = image.getPixel(x, y + 1);
+                Pixel rightPixel = image.getPixel(x + 1, y);
+                Pixel leftPixel = image.getPixel(x - 1, y);
 
-    public void enlargenImage() {}
+                int topAvg = (topPixel.getRed() + topPixel.getGreen() + topPixel.getBlue()) / 3;
+                int bottomAvg = (bottomPixel.getRed() + bottomPixel.getGreen() + bottomPixel.getBlue()) / 3;
+                int rightAvg = (rightPixel.getRed() + rightPixel.getGreen() + rightPixel.getBlue()) / 3;
+                int leftAvg = (leftPixel.getRed() + leftPixel.getGreen() + leftPixel.getBlue()) / 3;
+
+                int totalAvg = (topAvg + bottomAvg + rightAvg + leftAvg) / 4;
+
+                image.getPixel(x, y).setRed(totalAvg);
+                image.getPixel(x, y).setGreen(totalAvg);
+                image.getPixel(x, y).setBlue(totalAvg);
+
+
+            }
+        }
+
+    }
+
+    public void shrinkImage() {
+    }
+
+    public void enlargenImage() {
+    }
 }
