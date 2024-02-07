@@ -1,5 +1,7 @@
 package image;
 
+import images.Pixel;
+
 import java.util.Scanner;
 
 public class ImageProcessing {
@@ -71,15 +73,15 @@ public class ImageProcessing {
 
         }
         if (optionNum == 4) {
-            rotateImage(-90);
+            rotateLeft();
 
         }
         if (optionNum == 5) {
-            rotateImage(90);
+            rotateRight();
 
         }
         if (optionNum == 6) {
-            rotateImage(180);
+            flip();
         }
         if (optionNum == 7) {
             convertOldFashioned();
@@ -116,23 +118,86 @@ public class ImageProcessing {
     }
 
     public void convertBlackWhite() {
+        for (Pixel pixel : image) {
+            int red = pixel.getRed();
+            int green = pixel.getGreen();
+            int blue = pixel.getBlue();
+            int avgColors = (red + green + blue) / 3;
 
+            if (avgColors < 128) {
+                pixel.setRed(0);
+                pixel.setGreen(0);
+                pixel.setBlue(0);
+            } else {
+                pixel.setRed(255);
+                pixel.setGreen(255);
+                pixel.setBlue(255);
+            }
+
+        }
     }
 
     public void convertGrayscale() {
+        for (Pixel pixel : image) {
+            int red = pixel.getRed();
+            int green = pixel.getGreen();
+            int blue = pixel.getBlue();
+            int avgColors = (red + green + blue) / 3;
+            pixel.setRed(avgColors);
+            pixel.setGreen(avgColors);
+            pixel.setBlue(avgColors);
+        }
 
     }
 
+    // not sure if this fully works tbh
     public void convertLuminanceGrayscale() {
-
+        for (Pixel pixel : image) {
+            int red = pixel.getRed();
+            int green = pixel.getGreen();
+            int blue = pixel.getBlue();
+            int luminanceAvg = (int) (red * .299) + (int) (green * .587) + (int) (blue * 0.114);
+            pixel.setRed(luminanceAvg);
+            pixel.setGreen(luminanceAvg);
+            pixel.setBlue(luminanceAvg);
+        }
     }
 
     public void convertOldFashioned() {
 
     }
 
-    public void rotateImage(int degrees) {
+    public void rotateLeft() {
+        TweakedAPImage rotatedImage = new TweakedAPImage(image.getHeight(), image.getWidth());
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                Pixel originalPixel = image.getPixel(x, y);
+                rotatedImage.setPixel(y, x, originalPixel);
+            }
+        }
+        image = rotatedImage;
+    }
 
+    public void rotateRight() {
+        TweakedAPImage rotatedImage = new TweakedAPImage(image.getHeight(), image.getWidth());
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                Pixel originalPixel = image.getPixel(x, y);
+                rotatedImage.setPixel(rotatedImage.getWidth() - 1 - y, rotatedImage.getHeight() - 1 - x, originalPixel);
+            }
+        }
+        image = rotatedImage;
+    }
+
+    public void flip() {
+        TweakedAPImage flippedImage = new TweakedAPImage(image.getWidth(), image.getHeight());
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                Pixel orignalImagePixel = image.getPixel(image.getWidth() - 1 - x, image.getHeight() - 1 - y);
+                flippedImage.setPixel(x, y, orignalImagePixel);
+            }
+        }
+        image = flippedImage;
     }
 
     public void darkenImage() {
