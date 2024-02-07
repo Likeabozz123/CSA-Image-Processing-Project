@@ -243,7 +243,17 @@ public class ImageProcessing {
         }
     }
 
-    public void applyColorFilter() {}
+    public void applyColorFilter() {
+
+        for (Pixel pixel : image) {
+            int red = Math.min(pixel.getRed() + 20, 255);
+            int green = pixel.getGreen();
+            int blue = pixel.getBlue();
+            pixel.setRed(red);
+            pixel.setGreen(green);
+            pixel.setBlue(blue);
+        }
+    }
 
     public void posterizeImage() {}
 
