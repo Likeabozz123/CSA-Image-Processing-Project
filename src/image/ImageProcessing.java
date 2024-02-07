@@ -221,12 +221,26 @@ public class ImageProcessing {
         image = flippedImage;
     }
 
-    public void darkenImage() {
-
+    public void brightenImage() {
+        for (Pixel pixel : image) {
+            int red = Math.min(pixel.getRed() + 50, 255);
+            int green = Math.min(pixel.getGreen() + 50, 255);
+            int blue = Math.min(pixel.getBlue() + 50, 255);
+            pixel.setRed(red);
+            pixel.setGreen(green);
+            pixel.setBlue(blue);
+        }
     }
 
-    public void brightenImage() {
-
+    public void darkenImage() {
+        for (Pixel pixel : image) {
+            int red = Math.max(0, pixel.getRed() - 50);
+            int green = Math.max(0, pixel.getGreen() - 50);
+            int blue = Math.max(0, pixel.getBlue() - 50);
+            pixel.setRed(red);
+            pixel.setGreen(green);
+            pixel.setBlue(blue);
+        }
     }
 
     public void applyColorFilter() {}
