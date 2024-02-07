@@ -164,7 +164,28 @@ public class ImageProcessing {
     }
 
     public void convertOldFashioned() {
+        for (Pixel pixel : image) {
+            int red = pixel.getRed();
+            int green = pixel.getGreen();
+            int blue = pixel.getBlue();
 
+            if (red < 63) {
+                red = (int) (red * 1.1);
+                blue = (int) (blue * 0.9);
+            }
+            if (red < 192) {
+                red = (int) (red * 1.15);
+                blue = (int) (blue * 0.85);
+            }
+            if (red > 192) {
+                red = Math.min((int) (red * 1.08), 255);
+                blue = (int) (blue * 0.93);
+            }
+
+            pixel.setRed(red);
+            pixel.setGreen(green);
+            pixel.setBlue(blue);
+        }
     }
 
     public void rotateLeft() {
