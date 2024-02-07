@@ -22,6 +22,7 @@ public class ImageProcessing {
             image.draw();
         }
 
+        if (!running) System.exit(0); // bhatanagar allowed this since theres no really clean alternative
     }
 
     public void selectImage() {
@@ -328,21 +329,16 @@ public class ImageProcessing {
                 Pixel rightPixel = image.getPixel(x + 1, y);
                 Pixel leftPixel = image.getPixel(x - 1, y);
 
-                int topAvg = (topPixel.getRed() + topPixel.getGreen() + topPixel.getBlue()) / 3;
-                int bottomAvg = (bottomPixel.getRed() + bottomPixel.getGreen() + bottomPixel.getBlue()) / 3;
-                int rightAvg = (rightPixel.getRed() + rightPixel.getGreen() + rightPixel.getBlue()) / 3;
-                int leftAvg = (leftPixel.getRed() + leftPixel.getGreen() + leftPixel.getBlue()) / 3;
+                int totalRed = topPixel.getRed() + bottomPixel.getRed() + rightPixel.getRed() + leftPixel.getRed();
+                int totalGreen = topPixel.getGreen() + bottomPixel.getGreen() + rightPixel.getGreen() + leftPixel.getGreen();
+                int totalBlue = topPixel.getBlue() + bottomPixel.getBlue() + rightPixel.getBlue() + leftPixel.getBlue();
 
-                int totalAvg = (topAvg + bottomAvg + rightAvg + leftAvg) / 4;
-
-                image.getPixel(x, y).setRed(totalAvg);
-                image.getPixel(x, y).setGreen(totalAvg);
-                image.getPixel(x, y).setBlue(totalAvg);
-
+                image.getPixel(x, y).setRed(totalRed / 4);
+                image.getPixel(x, y).setGreen(totalGreen / 4);
+                image.getPixel(x, y).setBlue(totalBlue / 4);
 
             }
         }
-
     }
 
     public void shrinkImage(int shrinkFactor) {
@@ -379,5 +375,6 @@ public class ImageProcessing {
     }
 
     public void enlargenImage() {
+
     }
 }
