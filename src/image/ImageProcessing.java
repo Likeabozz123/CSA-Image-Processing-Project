@@ -113,7 +113,7 @@ public class ImageProcessing {
             shrinkImage(3);
         }
         if (optionNum == 16) {
-            enlargenImage();
+            enlargenImage(1.5);
         }
         if (optionNum == 17) running = false;
 
@@ -374,7 +374,18 @@ public class ImageProcessing {
         image = shrunkImage;
     }
 
-    public void enlargenImage() {
+    public void enlargenImage(double enlargenFactor) {
+        int newWidth = (int) (image.getWidth() * enlargenFactor);
+        int newHeight = (int) (image.getHeight() * enlargenFactor);
 
+        TweakedAPImage enlargedImage = new TweakedAPImage(newWidth, newHeight);
+
+        for (int x = 0; x < newWidth; x++) {
+            for (int y = 0; y < newHeight; y++) {
+                enlargedImage.setPixel(x, y, image.getPixel((int) (x / enlargenFactor), (int) (y / enlargenFactor)));
+            }
+        }
+
+        image = enlargedImage;
     }
 }
