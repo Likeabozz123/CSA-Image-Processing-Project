@@ -17,10 +17,11 @@ public class ImageProcessing {
 
         image = new TweakedAPImage(imageName);
 
-        while (running) {
-            presentImageProcessingOptions();
+        do {
             image.draw();
-        }
+            presentImageProcessingOptions();
+            image.dispose();
+        } while (running);
 
         if (!running) System.exit(0); // bhatanagar allowed this since theres no really clean alternative
     }
