@@ -278,6 +278,7 @@ public class ImageProcessing {
 
     /**
      * Brightens the image.
+     *
      * @param brightenAmount - factor to brighten the image by
      */
     public void brightenImage(int brightenAmount) {
@@ -293,6 +294,7 @@ public class ImageProcessing {
 
     /**
      * Darkens the image.
+     *
      * @param darkenAmount - factor to darken the image by
      */
     public void darkenImage(int darkenAmount) {
@@ -305,11 +307,13 @@ public class ImageProcessing {
             pixel.setBlue(blue);
         }
     }
+
     /**
      * Applies a user-inputted filter to the image.
-     * @param redFilter - amount to red to add to the image
+     *
+     * @param redFilter   - amount to red to add to the image
      * @param greenFilter - amount to green to add to the image
-     * @param blueFilter - amount to blue to add to the image
+     * @param blueFilter  - amount to blue to add to the image
      */
     public void applyColorFilter(int redFilter, int greenFilter, int blueFilter) {
         for (Pixel pixel : processedImage) {
@@ -365,7 +369,8 @@ public class ImageProcessing {
 
     /**
      * Sharpens the image
-     * @param degree - the degree of sharpening
+     *
+     * @param degree    - the degree of sharpening
      * @param threshold - the threshold value
      */
     public void sharpenImage(int degree, int threshold) {
@@ -418,6 +423,7 @@ public class ImageProcessing {
 
     /**
      * Shrinks the image.
+     *
      * @param shrinkFactor - factor to shrink the image
      */
     public void shrinkImage(int shrinkFactor) {
@@ -454,6 +460,7 @@ public class ImageProcessing {
 
     /**
      * Enlarges the image.
+     *
      * @param enlargenFactor - factor to enlarge image
      */
     public void enlargenImage(double enlargenFactor) {
