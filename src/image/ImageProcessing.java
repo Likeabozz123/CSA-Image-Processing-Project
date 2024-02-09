@@ -1,21 +1,23 @@
 package image;
 
+import images.APImage;
 import images.Pixel;
 
+import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
 
 public class ImageProcessing {
 
     private String imageName;
-    private TweakedAPImage image;
+    private APImage image;
     private boolean running = true;
     private final Scanner scanner = new Scanner(System.in);
 
     public void run() {
         selectImage();
 
-        image = new TweakedAPImage(imageName);
+        image = new APImage("src/resources/" + imageName);
 
         do {
             image.draw();
@@ -192,7 +194,7 @@ public class ImageProcessing {
     }
 
     public void rotateLeft() {
-        TweakedAPImage rotatedImage = new TweakedAPImage(image.getHeight(), image.getWidth());
+        APImage rotatedImage = new APImage(image.getHeight(), image.getWidth());
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
                 Pixel originalPixel = image.getPixel(x, y);
@@ -203,7 +205,7 @@ public class ImageProcessing {
     }
 
     public void rotateRight() {
-        TweakedAPImage rotatedImage = new TweakedAPImage(image.getHeight(), image.getWidth());
+        APImage rotatedImage = new APImage(image.getHeight(), image.getWidth());
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 Pixel originalPixel = image.getPixel(x, y);
@@ -214,7 +216,7 @@ public class ImageProcessing {
     }
 
     public void flip() {
-        TweakedAPImage flippedImage = new TweakedAPImage(image.getWidth(), image.getHeight());
+        APImage flippedImage = new APImage(image.getWidth(), image.getHeight());
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 Pixel orignalImagePixel = image.getPixel(image.getWidth() - 1 - x, image.getHeight() - 1 - y);
@@ -346,7 +348,7 @@ public class ImageProcessing {
         int newWidth = image.getWidth() / shrinkFactor;
         int newHeight = image.getHeight() / shrinkFactor;
 
-        TweakedAPImage shrunkImage = new TweakedAPImage(newWidth, newHeight);
+        APImage shrunkImage = new APImage(newWidth, newHeight);
 
         for (int y = 0; y < newHeight; y++) {
             for (int x = 0; x < newWidth; x++) {
@@ -379,7 +381,7 @@ public class ImageProcessing {
         int newWidth = (int) (image.getWidth() * enlargenFactor);
         int newHeight = (int) (image.getHeight() * enlargenFactor);
 
-        TweakedAPImage enlargedImage = new TweakedAPImage(newWidth, newHeight);
+        APImage enlargedImage = new APImage(newWidth, newHeight);
 
         for (int x = 0; x < newWidth; x++) {
             for (int y = 0; y < newHeight; y++) {
