@@ -127,8 +127,8 @@ public class ImageProcessing {
             blurImage();
         }
         if (optionNum == 15) {
-            System.out.println("Enter how much you would like the image to be shrunk by (multiplicative):");
-            double shrinkFactor = scanner.nextDouble();
+            System.out.println("Enter how much you would like the image to be shrunk by (multiplicative) (only integers):");
+            int shrinkFactor = scanner.nextInt();
             shrinkImage(shrinkFactor);
         }
         if (optionNum == 16) {
@@ -362,9 +362,9 @@ public class ImageProcessing {
         }
     }
 
-    public void shrinkImage(double shrinkFactor) {
-        int newWidth = (int) (processedImage.getWidth() / shrinkFactor);
-        int newHeight = (int) (processedImage.getHeight() / shrinkFactor);
+    public void shrinkImage(int shrinkFactor) {
+        int newWidth = processedImage.getWidth() / shrinkFactor;
+        int newHeight = processedImage.getHeight() / shrinkFactor;
 
         APImage shrunkImage = new APImage(newWidth, newHeight);
 
@@ -376,16 +376,16 @@ public class ImageProcessing {
 
                 for (int dy = 0; dy < shrinkFactor; dy++) {
                     for (int dx = 0; dx < shrinkFactor; dx++) {
-                        Pixel original = processedImage.getPixel((int) (x * shrinkFactor + dx), (int) (y * shrinkFactor + dy));
+                        Pixel original = processedImage.getPixel(x * shrinkFactor + dx, y * shrinkFactor + dy);
                         totalRed += original.getRed();
                         totalGreen += original.getGreen();
                         totalBlue += original.getBlue();
                     }
                 }
 
-                int shrunkRed = (int) (totalRed / (shrinkFactor * shrinkFactor));
-                int shrunkGreen = (int) (totalGreen / (shrinkFactor * shrinkFactor));
-                int shrunkBlue = (int) (totalBlue / (shrinkFactor * shrinkFactor));
+                int shrunkRed = totalRed / (shrinkFactor * shrinkFactor);
+                int shrunkGreen = totalGreen / (shrinkFactor * shrinkFactor);
+                int shrunkBlue = totalBlue / (shrinkFactor * shrinkFactor);
 
 
                 Pixel shrunkPixel = new Pixel(shrunkRed, shrunkGreen, shrunkBlue);
