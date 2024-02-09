@@ -78,15 +78,12 @@ public class ImageProcessing {
         }
         if (optionNum == 3) {
             convertLuminanceGrayscale();
-
         }
         if (optionNum == 4) {
             rotateLeft();
-
         }
         if (optionNum == 5) {
             rotateRight();
-
         }
         if (optionNum == 6) {
             flip();
@@ -95,13 +92,23 @@ public class ImageProcessing {
             convertOldFashioned();
         }
         if (optionNum == 8) {
-            darkenImage();
+            System.out.println("Enter how much you would like to darken your image by:");
+            int darkenAmount = scanner.nextInt();
+            darkenImage(darkenAmount);
         }
         if (optionNum == 9) {
-            brightenImage();
+            System.out.println("Enter how much you would like to brighten your image by:");
+            int brightenAmount = scanner.nextInt();
+            brightenImage(brightenAmount);
         }
         if (optionNum == 10) {
-            applyColorFilter();
+            System.out.println("Type the amount of red you would like to filter (0-255):");
+            int redFilter = scanner.nextInt();
+            System.out.println("Type the amount of green you would like to filter (0-255):");
+            int greenFilter = scanner.nextInt();
+            System.out.println("Type the amount of blue you would like to filter (0-255):");
+            int blueFilter = scanner.nextInt();
+            applyColorFilter(redFilter, greenFilter, blueFilter);
         }
         if (optionNum == 11) {
             posterizeImage();
@@ -110,16 +117,24 @@ public class ImageProcessing {
             convertPhotographicNegative();
         }
         if (optionNum == 13) {
-            sharpenImage(20, 10);
+            System.out.println("Enter the degree of which you would like the image to be sharpened by:");
+            int degree = scanner.nextInt();
+            System.out.println("Enter threshold:");
+            int threshold = scanner.nextInt();
+            sharpenImage(degree, threshold);
         }
         if (optionNum == 14) {
             blurImage();
         }
         if (optionNum == 15) {
-            shrinkImage(3);
+            System.out.println("Enter how much you would like the image to be shrunk by (multiplicative):");
+            double shrinkFactor = scanner.nextDouble();
+            shrinkImage(shrinkFactor);
         }
         if (optionNum == 16) {
-            enlargenImage(1.5);
+            System.out.println("Enter how much you would like the image to be enlarged by (multiplicative):");
+            double enlargenFactor = scanner.nextDouble();
+            enlargenImage(enlargenFactor);
         }
         if (optionNum == 17) running = false;
 
@@ -229,34 +244,34 @@ public class ImageProcessing {
         processedImage = flippedImage;
     }
 
-    public void brightenImage() {
+    public void brightenImage(int brightenAmount) {
         for (Pixel pixel : processedImage) {
-            int red = Math.min(pixel.getRed() + 50, 255);
-            int green = Math.min(pixel.getGreen() + 50, 255);
-            int blue = Math.min(pixel.getBlue() + 50, 255);
+            int red = Math.min(pixel.getRed() + brightenAmount, 255);
+            int green = Math.min(pixel.getGreen() + brightenAmount, 255);
+            int blue = Math.min(pixel.getBlue() + brightenAmount, 255);
             pixel.setRed(red);
             pixel.setGreen(green);
             pixel.setBlue(blue);
         }
     }
 
-    public void darkenImage() {
+    public void darkenImage(int darkenAmount) {
         for (Pixel pixel : processedImage) {
-            int red = Math.max(0, pixel.getRed() - 50);
-            int green = Math.max(0, pixel.getGreen() - 50);
-            int blue = Math.max(0, pixel.getBlue() - 50);
+            int red = Math.max(0, pixel.getRed() - darkenAmount);
+            int green = Math.max(0, pixel.getGreen() - darkenAmount);
+            int blue = Math.max(0, pixel.getBlue() - darkenAmount);
             pixel.setRed(red);
             pixel.setGreen(green);
             pixel.setBlue(blue);
         }
     }
 
-    public void applyColorFilter() {
+    public void applyColorFilter(int redFilter, int greenFilter, int blueFilter) {
 
         for (Pixel pixel : processedImage) {
-            int red = Math.min(pixel.getRed() + 100, 255);
-            int green = pixel.getGreen();
-            int blue = pixel.getBlue();
+            int red = Math.min(pixel.getRed() + redFilter, 255);
+            int green = Math.min(pixel.getGreen() + greenFilter, 255);
+            int blue = Math.min(pixel.getBlue() + blueFilter, 255);
             pixel.setRed(red);
             pixel.setGreen(green);
             pixel.setBlue(blue);
@@ -347,9 +362,9 @@ public class ImageProcessing {
         }
     }
 
-    public void shrinkImage(int shrinkFactor) {
-        int newWidth = processedImage.getWidth() / shrinkFactor;
-        int newHeight = processedImage.getHeight() / shrinkFactor;
+    public void shrinkImage(double shrinkFactor) {
+        int newWidth = (int) (processedImage.getWidth() / shrinkFactor);
+        int newHeight = (int) (processedImage.getHeight() / shrinkFactor);
 
         APImage shrunkImage = new APImage(newWidth, newHeight);
 
@@ -361,16 +376,16 @@ public class ImageProcessing {
 
                 for (int dy = 0; dy < shrinkFactor; dy++) {
                     for (int dx = 0; dx < shrinkFactor; dx++) {
-                        Pixel original = processedImage.getPixel(x * shrinkFactor + dx, y * shrinkFactor + dy);
+                        Pixel original = processedImage.getPixel((int) (x * shrinkFactor + dx), (int) (y * shrinkFactor + dy));
                         totalRed += original.getRed();
                         totalGreen += original.getGreen();
                         totalBlue += original.getBlue();
                     }
                 }
 
-                int shrunkRed = totalRed / (shrinkFactor * shrinkFactor);
-                int shrunkGreen = totalGreen / (shrinkFactor * shrinkFactor);
-                int shrunkBlue = totalBlue / (shrinkFactor * shrinkFactor);
+                int shrunkRed = (int) (totalRed / (shrinkFactor * shrinkFactor));
+                int shrunkGreen = (int) (totalGreen / (shrinkFactor * shrinkFactor));
+                int shrunkBlue = (int) (totalBlue / (shrinkFactor * shrinkFactor));
 
 
                 Pixel shrunkPixel = new Pixel(shrunkRed, shrunkGreen, shrunkBlue);
