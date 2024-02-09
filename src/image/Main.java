@@ -9,7 +9,6 @@ public class Main {
         ImageProcessing imageProcessing = new ImageProcessing();
         imageProcessing.run();
 
-
     }
 
 

@@ -3,26 +3,29 @@ package image;
 import images.APImage;
 import images.Pixel;
 
-import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
 
 public class ImageProcessing {
 
     private String imageName;
-    private APImage image;
+    private APImage processedImage;
     private boolean running = true;
     private final Scanner scanner = new Scanner(System.in);
 
     public void run() {
         selectImage();
 
-        image = new APImage("src/resources/" + imageName);
+        APImage originalImage = new APImage("src/resources/" + imageName);
+        processedImage = originalImage.clone();
+        originalImage.draw();
 
         do {
-            image.draw();
+            APImage deletedImage = processedImage;
+            processedImage = originalImage.clone();
             presentImageProcessingOptions();
-            image.dispose();
+            processedImage.draw();
+            deletedImage.dispose();
         } while (running);
 
         if (!running) System.exit(0); // bhatanagar allowed this since theres no really clean alternative
@@ -123,7 +126,7 @@ public class ImageProcessing {
     }
 
     public void convertBlackWhite() {
-        for (Pixel pixel : image) {
+        for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
             int green = pixel.getGreen();
             int blue = pixel.getBlue();
@@ -143,7 +146,7 @@ public class ImageProcessing {
     }
 
     public void convertGrayscale() {
-        for (Pixel pixel : image) {
+        for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
             int green = pixel.getGreen();
             int blue = pixel.getBlue();
@@ -157,7 +160,7 @@ public class ImageProcessing {
 
     // not sure if this fully works tbh
     public void convertLuminanceGrayscale() {
-        for (Pixel pixel : image) {
+        for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
             int green = pixel.getGreen();
             int blue = pixel.getBlue();
@@ -169,7 +172,7 @@ public class ImageProcessing {
     }
 
     public void convertOldFashioned() {
-        for (Pixel pixel : image) {
+        for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
             int green = pixel.getGreen();
             int blue = pixel.getBlue();
@@ -194,40 +197,40 @@ public class ImageProcessing {
     }
 
     public void rotateLeft() {
-        APImage rotatedImage = new APImage(image.getHeight(), image.getWidth());
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                Pixel originalPixel = image.getPixel(x, y);
+        APImage rotatedImage = new APImage(processedImage.getHeight(), processedImage.getWidth());
+        for (int y = 0; y < processedImage.getHeight(); y++) {
+            for (int x = 0; x < processedImage.getWidth(); x++) {
+                Pixel originalPixel = processedImage.getPixel(x, y);
                 rotatedImage.setPixel(y, x, originalPixel);
             }
         }
-        image = rotatedImage;
+        processedImage = rotatedImage;
     }
 
     public void rotateRight() {
-        APImage rotatedImage = new APImage(image.getHeight(), image.getWidth());
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
-                Pixel originalPixel = image.getPixel(x, y);
+        APImage rotatedImage = new APImage(processedImage.getHeight(), processedImage.getWidth());
+        for (int x = 0; x < processedImage.getWidth(); x++) {
+            for (int y = 0; y < processedImage.getHeight(); y++) {
+                Pixel originalPixel = processedImage.getPixel(x, y);
                 rotatedImage.setPixel(rotatedImage.getWidth() - 1 - y, rotatedImage.getHeight() - 1 - x, originalPixel);
             }
         }
-        image = rotatedImage;
+        processedImage = rotatedImage;
     }
 
     public void flip() {
-        APImage flippedImage = new APImage(image.getWidth(), image.getHeight());
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
-                Pixel orignalImagePixel = image.getPixel(image.getWidth() - 1 - x, image.getHeight() - 1 - y);
+        APImage flippedImage = new APImage(processedImage.getWidth(), processedImage.getHeight());
+        for (int x = 0; x < processedImage.getWidth(); x++) {
+            for (int y = 0; y < processedImage.getHeight(); y++) {
+                Pixel orignalImagePixel = processedImage.getPixel(processedImage.getWidth() - 1 - x, processedImage.getHeight() - 1 - y);
                 flippedImage.setPixel(x, y, orignalImagePixel);
             }
         }
-        image = flippedImage;
+        processedImage = flippedImage;
     }
 
     public void brightenImage() {
-        for (Pixel pixel : image) {
+        for (Pixel pixel : processedImage) {
             int red = Math.min(pixel.getRed() + 50, 255);
             int green = Math.min(pixel.getGreen() + 50, 255);
             int blue = Math.min(pixel.getBlue() + 50, 255);
@@ -238,7 +241,7 @@ public class ImageProcessing {
     }
 
     public void darkenImage() {
-        for (Pixel pixel : image) {
+        for (Pixel pixel : processedImage) {
             int red = Math.max(0, pixel.getRed() - 50);
             int green = Math.max(0, pixel.getGreen() - 50);
             int blue = Math.max(0, pixel.getBlue() - 50);
@@ -250,7 +253,7 @@ public class ImageProcessing {
 
     public void applyColorFilter() {
 
-        for (Pixel pixel : image) {
+        for (Pixel pixel : processedImage) {
             int red = Math.min(pixel.getRed() + 100, 255);
             int green = pixel.getGreen();
             int blue = pixel.getBlue();
@@ -265,7 +268,7 @@ public class ImageProcessing {
         int newRed = random.nextInt(256);
         int newGreen = random.nextInt(256);
         int newBlue = random.nextInt(256);
-        for (Pixel pixel : image) {
+        for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
             int green = pixel.getGreen();
             int blue = pixel.getBlue();
@@ -288,7 +291,7 @@ public class ImageProcessing {
 
     public void convertPhotographicNegative() {
         convertGrayscale();
-        for (Pixel pixel : image) {
+        for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
             int green = pixel.getGreen();
             int blue = pixel.getBlue();
@@ -300,11 +303,11 @@ public class ImageProcessing {
     }
 
     public void sharpenImage(int degree, int threshold) {
-        for (int y = 0; y < image.getHeight() - 1; y++) {
-            for (int x = 1; x < image.getWidth(); x++) {
-                Pixel cornerPixel = image.getPixel(x - 1, y);
-                Pixel rightPixel = image.getPixel(x, y);
-                Pixel bottomPixel = image.getPixel(x, y + 1);
+        for (int y = 0; y < processedImage.getHeight() - 1; y++) {
+            for (int x = 1; x < processedImage.getWidth(); x++) {
+                Pixel cornerPixel = processedImage.getPixel(x - 1, y);
+                Pixel rightPixel = processedImage.getPixel(x, y);
+                Pixel bottomPixel = processedImage.getPixel(x, y + 1);
 
                 int cornerAvg = (cornerPixel.getRed() + cornerPixel.getGreen() + cornerPixel.getBlue()) / 3;
                 int rightAvg = (rightPixel.getRed() + rightPixel.getGreen() + rightPixel.getBlue()) / 3;
@@ -325,28 +328,28 @@ public class ImageProcessing {
 
     public void blurImage() {
 
-        for (int y = 1; y < image.getHeight() - 2; y++) {
-            for (int x = 1; x < image.getWidth() - 2; x++) {
-                Pixel topPixel = image.getPixel(x, y - 1);
-                Pixel bottomPixel = image.getPixel(x, y + 1);
-                Pixel rightPixel = image.getPixel(x + 1, y);
-                Pixel leftPixel = image.getPixel(x - 1, y);
+        for (int y = 1; y < processedImage.getHeight() - 2; y++) {
+            for (int x = 1; x < processedImage.getWidth() - 2; x++) {
+                Pixel topPixel = processedImage.getPixel(x, y - 1);
+                Pixel bottomPixel = processedImage.getPixel(x, y + 1);
+                Pixel rightPixel = processedImage.getPixel(x + 1, y);
+                Pixel leftPixel = processedImage.getPixel(x - 1, y);
 
                 int totalRed = topPixel.getRed() + bottomPixel.getRed() + rightPixel.getRed() + leftPixel.getRed();
                 int totalGreen = topPixel.getGreen() + bottomPixel.getGreen() + rightPixel.getGreen() + leftPixel.getGreen();
                 int totalBlue = topPixel.getBlue() + bottomPixel.getBlue() + rightPixel.getBlue() + leftPixel.getBlue();
 
-                image.getPixel(x, y).setRed(totalRed / 4);
-                image.getPixel(x, y).setGreen(totalGreen / 4);
-                image.getPixel(x, y).setBlue(totalBlue / 4);
+                processedImage.getPixel(x, y).setRed(totalRed / 4);
+                processedImage.getPixel(x, y).setGreen(totalGreen / 4);
+                processedImage.getPixel(x, y).setBlue(totalBlue / 4);
 
             }
         }
     }
 
     public void shrinkImage(int shrinkFactor) {
-        int newWidth = image.getWidth() / shrinkFactor;
-        int newHeight = image.getHeight() / shrinkFactor;
+        int newWidth = processedImage.getWidth() / shrinkFactor;
+        int newHeight = processedImage.getHeight() / shrinkFactor;
 
         APImage shrunkImage = new APImage(newWidth, newHeight);
 
@@ -358,7 +361,7 @@ public class ImageProcessing {
 
                 for (int dy = 0; dy < shrinkFactor; dy++) {
                     for (int dx = 0; dx < shrinkFactor; dx++) {
-                        Pixel original = image.getPixel(x * shrinkFactor + dx, y * shrinkFactor + dy);
+                        Pixel original = processedImage.getPixel(x * shrinkFactor + dx, y * shrinkFactor + dy);
                         totalRed += original.getRed();
                         totalGreen += original.getGreen();
                         totalBlue += original.getBlue();
@@ -374,21 +377,21 @@ public class ImageProcessing {
                 shrunkImage.setPixel(x, y, shrunkPixel);
             }
         }
-        image = shrunkImage;
+        processedImage = shrunkImage;
     }
 
     public void enlargenImage(double enlargenFactor) {
-        int newWidth = (int) (image.getWidth() * enlargenFactor);
-        int newHeight = (int) (image.getHeight() * enlargenFactor);
+        int newWidth = (int) (processedImage.getWidth() * enlargenFactor);
+        int newHeight = (int) (processedImage.getHeight() * enlargenFactor);
 
         APImage enlargedImage = new APImage(newWidth, newHeight);
 
         for (int x = 0; x < newWidth; x++) {
             for (int y = 0; y < newHeight; y++) {
-                enlargedImage.setPixel(x, y, image.getPixel((int) (x / enlargenFactor), (int) (y / enlargenFactor)));
+                enlargedImage.setPixel(x, y, processedImage.getPixel((int) (x / enlargenFactor), (int) (y / enlargenFactor)));
             }
         }
 
-        image = enlargedImage;
+        processedImage = enlargedImage;
     }
 }
