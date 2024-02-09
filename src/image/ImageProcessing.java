@@ -28,7 +28,7 @@ public class ImageProcessing {
             deletedImage.dispose();
         } while (running);
 
-        if (!running) System.exit(0); // bhatanagar allowed this since theres no really clean alternative
+        if (!running) System.exit(0); // Bhatnagar allowed this since there is no really clean alternative
     }
 
     public void selectImage() {
