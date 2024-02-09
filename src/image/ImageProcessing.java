@@ -279,7 +279,7 @@ public class ImageProcessing {
     /**
      * Brightens the image.
      *
-     * @param brightenAmount - factor to brighten the image by
+     * @param brightenAmount factor to brighten the image by
      */
     public void brightenImage(int brightenAmount) {
         for (Pixel pixel : processedImage) {
@@ -295,7 +295,7 @@ public class ImageProcessing {
     /**
      * Darkens the image.
      *
-     * @param darkenAmount - factor to darken the image by
+     * @param darkenAmount factor to darken the image by
      */
     public void darkenImage(int darkenAmount) {
         for (Pixel pixel : processedImage) {
@@ -311,9 +311,9 @@ public class ImageProcessing {
     /**
      * Applies a user-inputted filter to the image.
      *
-     * @param redFilter   - amount to red to add to the image
-     * @param greenFilter - amount to green to add to the image
-     * @param blueFilter  - amount to blue to add to the image
+     * @param redFilter   amount to red to add to the image
+     * @param greenFilter amount to green to add to the image
+     * @param blueFilter  amount to blue to add to the image
      */
     public void applyColorFilter(int redFilter, int greenFilter, int blueFilter) {
         for (Pixel pixel : processedImage) {
@@ -370,8 +370,8 @@ public class ImageProcessing {
     /**
      * Sharpens the image
      *
-     * @param degree    - the degree of sharpening
-     * @param threshold - the threshold value
+     * @param degree    the degree of sharpening
+     * @param threshold the threshold value
      */
     public void sharpenImage(int degree, int threshold) {
         for (int y = 0; y < processedImage.getHeight() - 1; y++) {
@@ -424,7 +424,7 @@ public class ImageProcessing {
     /**
      * Shrinks the image.
      *
-     * @param shrinkFactor - factor to shrink the image
+     * @param shrinkFactor factor to shrink the image
      */
     public void shrinkImage(int shrinkFactor) {
         int newWidth = processedImage.getWidth() / shrinkFactor;
@@ -461,7 +461,7 @@ public class ImageProcessing {
     /**
      * Enlarges the image.
      *
-     * @param enlargenFactor - factor to enlarge image
+     * @param enlargenFactor factor to enlarge image
      */
     public void enlargenImage(double enlargenFactor) {
         int newWidth = (int) (processedImage.getWidth() * enlargenFactor);
