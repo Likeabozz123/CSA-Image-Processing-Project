@@ -6,6 +6,9 @@ import images.Pixel;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * The ImageProcessing class holds all our methods for processing images.
+ */
 public class ImageProcessing {
 
     private String imageName;
@@ -13,6 +16,9 @@ public class ImageProcessing {
     private boolean running = true;
     private final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Runs the image processing application.
+     */
     public void run() {
         selectImage();
 
@@ -28,9 +34,14 @@ public class ImageProcessing {
             deletedImage.dispose();
         } while (running);
 
+
         if (!running) System.exit(0); // Bhatnagar allowed this since there is no really clean alternative
+
     }
 
+    /**
+     * Selects an image for processing.
+     */
     public void selectImage() {
         System.out.println("Default Images : ");
         System.out.println("1. arch");
@@ -42,11 +53,13 @@ public class ImageProcessing {
         System.out.println("6. swan");
         System.out.println("For non-default images they must be stored in src/resources folder. (Must be a jpg file)");
 
-
         System.out.println("Enter the file name of the image: (Type a string) :");
         imageName = scanner.nextLine() + ".jpg";
     }
 
+    /**
+     * Presents choices for image processing to user.
+     */
     public void presentImageProcessingOptions() {
         System.out.println("Select what processing you would like to do to the image (Type a number) :");
 
@@ -137,9 +150,11 @@ public class ImageProcessing {
             enlargenImage(enlargenFactor);
         }
         if (optionNum == 17) running = false;
-
     }
 
+    /**
+     * Converts the image to black and white.
+     */
     public void convertBlackWhite() {
         for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
@@ -156,24 +171,29 @@ public class ImageProcessing {
                 pixel.setGreen(255);
                 pixel.setBlue(255);
             }
-
         }
     }
 
+    /**
+     * Converts the image to grayscale.
+     */
     public void convertGrayscale() {
         for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
             int green = pixel.getGreen();
             int blue = pixel.getBlue();
-            int avgColors = (red + green + blue) / 3;
+            int avgColors = (red + green + blue) /
+
+                    3;
             pixel.setRed(avgColors);
             pixel.setGreen(avgColors);
             pixel.setBlue(avgColors);
         }
-
     }
 
-    // not sure if this fully works tbh
+    /**
+     * Converts the image to luminance grayscale.
+     */
     public void convertLuminanceGrayscale() {
         for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
@@ -186,6 +206,9 @@ public class ImageProcessing {
         }
     }
 
+    /**
+     * Converts the image to an old-fashioned picture.
+     */
     public void convertOldFashioned() {
         for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
@@ -211,6 +234,9 @@ public class ImageProcessing {
         }
     }
 
+    /**
+     * Rotates the image 90 degrees to the left.
+     */
     public void rotateLeft() {
         APImage rotatedImage = new APImage(processedImage.getHeight(), processedImage.getWidth());
         for (int y = 0; y < processedImage.getHeight(); y++) {
@@ -222,6 +248,9 @@ public class ImageProcessing {
         processedImage = rotatedImage;
     }
 
+    /**
+     * Rotates the image 90 degrees to the right.
+     */
     public void rotateRight() {
         APImage rotatedImage = new APImage(processedImage.getHeight(), processedImage.getWidth());
         for (int x = 0; x < processedImage.getWidth(); x++) {
@@ -233,17 +262,24 @@ public class ImageProcessing {
         processedImage = rotatedImage;
     }
 
+    /**
+     * Flips the image.
+     */
     public void flip() {
         APImage flippedImage = new APImage(processedImage.getWidth(), processedImage.getHeight());
         for (int x = 0; x < processedImage.getWidth(); x++) {
             for (int y = 0; y < processedImage.getHeight(); y++) {
-                Pixel orignalImagePixel = processedImage.getPixel(processedImage.getWidth() - 1 - x, processedImage.getHeight() - 1 - y);
-                flippedImage.setPixel(x, y, orignalImagePixel);
+                Pixel originalImagePixel = processedImage.getPixel(processedImage.getWidth() - 1 - x, processedImage.getHeight() - 1 - y);
+                flippedImage.setPixel(x, y, originalImagePixel);
             }
         }
         processedImage = flippedImage;
     }
 
+    /**
+     * Brightens the image.
+     * @param brightenAmount - factor to brighten the image by
+     */
     public void brightenImage(int brightenAmount) {
         for (Pixel pixel : processedImage) {
             int red = Math.min(pixel.getRed() + brightenAmount, 255);
@@ -255,6 +291,10 @@ public class ImageProcessing {
         }
     }
 
+    /**
+     * Darkens the image.
+     * @param darkenAmount - factor to darken the image by
+     */
     public void darkenImage(int darkenAmount) {
         for (Pixel pixel : processedImage) {
             int red = Math.max(0, pixel.getRed() - darkenAmount);
@@ -265,9 +305,13 @@ public class ImageProcessing {
             pixel.setBlue(blue);
         }
     }
-
+    /**
+     * Applies a user-inputted filter to the image.
+     * @param redFilter - amount to red to add to the image
+     * @param greenFilter - amount to green to add to the image
+     * @param blueFilter - amount to blue to add to the image
+     */
     public void applyColorFilter(int redFilter, int greenFilter, int blueFilter) {
-
         for (Pixel pixel : processedImage) {
             int red = Math.min(pixel.getRed() + redFilter, 255);
             int green = Math.min(pixel.getGreen() + greenFilter, 255);
@@ -278,6 +322,9 @@ public class ImageProcessing {
         }
     }
 
+    /**
+     * Posterizes the image.
+     */
     public void posterizeImage() {
         Random random = new Random();
         int newRed = random.nextInt(256);
@@ -294,16 +341,16 @@ public class ImageProcessing {
                 pixel.setGreen(255);
                 pixel.setBlue(255);
             } else {
-
                 pixel.setRed(newRed);
                 pixel.setGreen(newGreen);
                 pixel.setBlue(newBlue);
             }
-
         }
-
     }
 
+    /**
+     * Converts the image to a photographic negative.
+     */
     public void convertPhotographicNegative() {
         convertGrayscale();
         for (Pixel pixel : processedImage) {
@@ -314,9 +361,13 @@ public class ImageProcessing {
             pixel.setGreen(255 - green);
             pixel.setBlue(255 - blue);
         }
-
     }
 
+    /**
+     * Sharpens the image
+     * @param degree - the degree of sharpening
+     * @param threshold - the threshold value
+     */
     public void sharpenImage(int degree, int threshold) {
         for (int y = 0; y < processedImage.getHeight() - 1; y++) {
             for (int x = 1; x < processedImage.getWidth(); x++) {
@@ -330,7 +381,9 @@ public class ImageProcessing {
 
                 if (Math.abs(rightAvg - cornerAvg) <= threshold || Math.abs(rightAvg - bottomAvg) <= threshold) {
                     int red = rightPixel.getRed();
-                    int green = rightPixel.getGreen();
+                    int green
+
+                            = rightPixel.getGreen();
                     int blue = rightPixel.getBlue();
 
                     rightPixel.setRed(Math.min(red + degree, 255));
@@ -341,8 +394,10 @@ public class ImageProcessing {
         }
     }
 
+    /**
+     * Blurs the image.
+     */
     public void blurImage() {
-
         for (int y = 1; y < processedImage.getHeight() - 2; y++) {
             for (int x = 1; x < processedImage.getWidth() - 2; x++) {
                 Pixel topPixel = processedImage.getPixel(x, y - 1);
@@ -357,11 +412,14 @@ public class ImageProcessing {
                 processedImage.getPixel(x, y).setRed(totalRed / 4);
                 processedImage.getPixel(x, y).setGreen(totalGreen / 4);
                 processedImage.getPixel(x, y).setBlue(totalBlue / 4);
-
             }
         }
     }
 
+    /**
+     * Shrinks the image.
+     * @param shrinkFactor - factor to shrink the image
+     */
     public void shrinkImage(int shrinkFactor) {
         int newWidth = processedImage.getWidth() / shrinkFactor;
         int newHeight = processedImage.getHeight() / shrinkFactor;
@@ -387,7 +445,6 @@ public class ImageProcessing {
                 int shrunkGreen = totalGreen / (shrinkFactor * shrinkFactor);
                 int shrunkBlue = totalBlue / (shrinkFactor * shrinkFactor);
 
-
                 Pixel shrunkPixel = new Pixel(shrunkRed, shrunkGreen, shrunkBlue);
                 shrunkImage.setPixel(x, y, shrunkPixel);
             }
@@ -395,6 +452,10 @@ public class ImageProcessing {
         processedImage = shrunkImage;
     }
 
+    /**
+     * Enlarges the image.
+     * @param enlargenFactor - factor to enlarge image
+     */
     public void enlargenImage(double enlargenFactor) {
         int newWidth = (int) (processedImage.getWidth() * enlargenFactor);
         int newHeight = (int) (processedImage.getHeight() * enlargenFactor);
