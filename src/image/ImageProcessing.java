@@ -76,9 +76,7 @@ public class ImageProcessing {
             int red = pixel.getRed();
             int green = pixel.getGreen();
             int blue = pixel.getBlue();
-            int avgColors = (red + green + blue) /
-
-                    3;
+            int avgColors = (red + green + blue) / 3;
             pixel.setRed(avgColors);
             pixel.setGreen(avgColors);
             pixel.setBlue(avgColors);
@@ -104,6 +102,7 @@ public class ImageProcessing {
      * Converts the image to an old-fashioned picture.
      */
     public void convertOldFashioned() {
+        convertGrayscale();
         for (Pixel pixel : processedImage) {
             int red = pixel.getRed();
             int green = pixel.getGreen();
