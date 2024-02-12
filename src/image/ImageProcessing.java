@@ -31,7 +31,7 @@ public class ImageProcessing {
             processedImage = originalImage.clone();
             presentImageProcessingOptions();
             processedImage.draw();
-            deletedImage.dispose();
+            deletedImage.dispose(); // bhatnagar allowed
         } while (running);
 
 
@@ -106,21 +106,52 @@ public class ImageProcessing {
         }
         if (optionNum == 8) {
             System.out.println("Enter how much you would like to darken your image by:");
+
             int darkenAmount = scanner.nextInt();
+
+            while (darkenAmount < 0) {
+                System.out.println("Please re-enter a positive number:");
+                darkenAmount = scanner.nextInt();
+            }
+
             darkenImage(darkenAmount);
         }
         if (optionNum == 9) {
             System.out.println("Enter how much you would like to brighten your image by:");
             int brightenAmount = scanner.nextInt();
+
+            while (brightenAmount < 0) {
+                System.out.println("Please re-enter a positive number:");
+                brightenAmount = scanner.nextInt();
+            }
+
             brightenImage(brightenAmount);
         }
         if (optionNum == 10) {
             System.out.println("Type the amount of red you would like to filter (0-255):");
             int redFilter = scanner.nextInt();
+
+            while (redFilter < 0 || redFilter > 255) {
+                System.out.println("Please re-enter a valid number:");
+                redFilter = scanner.nextInt();
+            }
+
             System.out.println("Type the amount of green you would like to filter (0-255):");
             int greenFilter = scanner.nextInt();
+
+            while (greenFilter < 0 || greenFilter > 255) {
+                System.out.println("Please re-enter a valid number:");
+                greenFilter = scanner.nextInt();
+            }
+
             System.out.println("Type the amount of blue you would like to filter (0-255):");
             int blueFilter = scanner.nextInt();
+
+            while (blueFilter < 0 || blueFilter > 255) {
+                System.out.println("Please re-enter a valid number:");
+                blueFilter = scanner.nextInt();
+            }
+
             applyColorFilter(redFilter, greenFilter, blueFilter);
         }
         if (optionNum == 11) {
@@ -132,8 +163,20 @@ public class ImageProcessing {
         if (optionNum == 13) {
             System.out.println("Enter the degree of which you would like the image to be sharpened by:");
             int degree = scanner.nextInt();
+
+            while (degree < 0) {
+                System.out.println("Please re-enter a positive number:");
+                degree = scanner.nextInt();
+            }
+
             System.out.println("Enter threshold:");
             int threshold = scanner.nextInt();
+
+            while (threshold < 0) {
+                System.out.println("Please re-enter a positive number:");
+                threshold = scanner.nextInt();
+            }
+
             sharpenImage(degree, threshold);
         }
         if (optionNum == 14) {
@@ -142,11 +185,22 @@ public class ImageProcessing {
         if (optionNum == 15) {
             System.out.println("Enter how much you would like the image to be shrunk by (multiplicative) (only integers):");
             int shrinkFactor = scanner.nextInt();
+            while (shrinkFactor < 0) {
+                System.out.println("Please re-enter a positive number:");
+                shrinkFactor = scanner.nextInt();
+            }
+
             shrinkImage(shrinkFactor);
         }
         if (optionNum == 16) {
             System.out.println("Enter how much you would like the image to be enlarged by (multiplicative):");
             double enlargenFactor = scanner.nextDouble();
+
+            while (enlargenFactor < 0) {
+                System.out.println("Please re-enter a positive number:");
+                enlargenFactor = scanner.nextInt();
+            }
+
             enlargenImage(enlargenFactor);
         }
         if (optionNum == 17) running = false;
