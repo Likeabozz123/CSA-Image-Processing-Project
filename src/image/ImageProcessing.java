@@ -3,6 +3,7 @@ package image;
 import images.APImage;
 import images.Pixel;
 
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -12,7 +13,6 @@ import java.util.Scanner;
 public class ImageProcessing {
 
     private String imageName;
-    private APImage originalImage;
     private APImage processedImage;
     private boolean running = true;
     private final Scanner scanner = new Scanner(System.in);
@@ -22,6 +22,8 @@ public class ImageProcessing {
      */
     public void run() {
         selectImage();
+
+        APImage originalImage;
 
         try {
            originalImage = new APImage("src/resources/" + imageName);
@@ -35,9 +37,13 @@ public class ImageProcessing {
         System.out.println("");
 
         do {
+            boolean invalidInput = false;
+
             APImage deletedImage = processedImage;
             processedImage = originalImage.clone();
+
             presentImageProcessingOptions();
+
             processedImage.draw();
             deletedImage.dispose(); // bhatnagar allowed
         } while (running);
@@ -60,6 +66,7 @@ public class ImageProcessing {
         System.out.println("5. smokey");
         System.out.println("6. swan");
         System.out.println("For non-default images they must be stored in src/resources folder. (Must be a jpg file)");
+        System.out.println("Invalid files or an empty input will automatically resort to smokey");
 
         System.out.println("Enter the file name of the image: (Type a string) :");
         imageName = scanner.nextLine() + ".jpg";
@@ -113,52 +120,27 @@ public class ImageProcessing {
             convertOldFashioned();
         }
         if (optionNum == 8) {
-            System.out.println("Enter how much you would like to darken your image by:");
+            System.out.println("Enter how much you would like to darken your image by (only positive numbers):");
 
-            int darkenAmount = scanner.nextInt();
-
-            while (darkenAmount < 0) {
-                System.out.println("Please re-enter a positive number:");
-                darkenAmount = scanner.nextInt();
-            }
+            int darkenAmount = getPositiveNumberInput();
 
             darkenImage(darkenAmount);
         }
         if (optionNum == 9) {
-            System.out.println("Enter how much you would like to brighten your image by:");
-            int brightenAmount = scanner.nextInt();
-
-            while (brightenAmount < 0) {
-                System.out.println("Please re-enter a positive number:");
-                brightenAmount = scanner.nextInt();
-            }
+            System.out.println("Enter how much you would like to brighten your image by (only positive numbers):");
+            int brightenAmount = getPositiveNumberInput();
 
             brightenImage(brightenAmount);
         }
         if (optionNum == 10) {
             System.out.println("Type the amount of red you would like to filter (0-255):");
-            int redFilter = scanner.nextInt();
-
-            while (redFilter < 0 || redFilter > 255) {
-                System.out.println("Please re-enter a valid number:");
-                redFilter = scanner.nextInt();
-            }
+            int redFilter = getNumberBetweenBounds(0, 255);
 
             System.out.println("Type the amount of green you would like to filter (0-255):");
-            int greenFilter = scanner.nextInt();
-
-            while (greenFilter < 0 || greenFilter > 255) {
-                System.out.println("Please re-enter a valid number:");
-                greenFilter = scanner.nextInt();
-            }
+            int greenFilter = getNumberBetweenBounds(0, 255);
 
             System.out.println("Type the amount of blue you would like to filter (0-255):");
-            int blueFilter = scanner.nextInt();
-
-            while (blueFilter < 0 || blueFilter > 255) {
-                System.out.println("Please re-enter a valid number:");
-                blueFilter = scanner.nextInt();
-            }
+            int blueFilter = getNumberBetweenBounds(0, 255);
 
             applyColorFilter(redFilter, greenFilter, blueFilter);
         }
@@ -170,20 +152,10 @@ public class ImageProcessing {
         }
         if (optionNum == 13) {
             System.out.println("Enter the degree of which you would like the image to be sharpened by:");
-            int degree = scanner.nextInt();
-
-            while (degree < 0) {
-                System.out.println("Please re-enter a positive number:");
-                degree = scanner.nextInt();
-            }
+            int degree = getPositiveNumberInput();
 
             System.out.println("Enter threshold:");
-            int threshold = scanner.nextInt();
-
-            while (threshold < 0) {
-                System.out.println("Please re-enter a positive number:");
-                threshold = scanner.nextInt();
-            }
+            int threshold = getPositiveNumberInput();
 
             sharpenImage(degree, threshold);
         }
@@ -192,22 +164,13 @@ public class ImageProcessing {
         }
         if (optionNum == 15) {
             System.out.println("Enter how much you would like the image to be shrunk by (multiplicative) (only integers):");
-            int shrinkFactor = scanner.nextInt();
-            while (shrinkFactor < 0) {
-                System.out.println("Please re-enter a positive number:");
-                shrinkFactor = scanner.nextInt();
-            }
+            int shrinkFactor = getPositiveNumberInput();
 
             shrinkImage(shrinkFactor);
         }
         if (optionNum == 16) {
-            System.out.println("Enter how much you would like the image to be enlarged by (multiplicative):");
-            double enlargenFactor = scanner.nextDouble();
-
-            while (enlargenFactor < 0) {
-                System.out.println("Please re-enter a positive number:");
-                enlargenFactor = scanner.nextInt();
-            }
+            System.out.println("Enter how much you would like the image to be enlarged by (multiplicative) (only integers):");
+            int enlargenFactor = getPositiveNumberInput();
 
             enlargenImage(enlargenFactor);
         }
@@ -525,18 +488,59 @@ public class ImageProcessing {
      *
      * @param enlargenFactor factor to enlarge image
      */
-    public void enlargenImage(double enlargenFactor) {
-        int newWidth = (int) (processedImage.getWidth() * enlargenFactor);
-        int newHeight = (int) (processedImage.getHeight() * enlargenFactor);
+    public void enlargenImage(int enlargenFactor) {
+        int newWidth = processedImage.getWidth() * enlargenFactor;
+        int newHeight = processedImage.getHeight() * enlargenFactor;
 
         APImage enlargedImage = new APImage(newWidth, newHeight);
 
         for (int x = 0; x < newWidth; x++) {
             for (int y = 0; y < newHeight; y++) {
-                enlargedImage.setPixel(x, y, processedImage.getPixel((int) (x / enlargenFactor), (int) (y / enlargenFactor)));
+                enlargedImage.setPixel(x, y, processedImage.getPixel(x / enlargenFactor, y / enlargenFactor));
             }
         }
 
         processedImage = enlargedImage;
+    }
+
+    public int getPositiveNumberInput() {
+        int num = 10;
+
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                num = scanner.nextInt();
+                while (num < 0) {
+                    System.out.println("Please re-enter a valid number:");
+                    num = scanner.nextInt();
+                }
+                validInput = true;
+            } catch (InputMismatchException exception) {
+                System.out.println("Invalid input please try again.");
+                scanner.next(); // consumes the invalid token
+            }
+        }
+        return num;
+    }
+
+    public int getNumberBetweenBounds(int startBound, int endBound) {
+
+        int num = 10;
+
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                num = scanner.nextInt();
+                while (num < startBound || num > endBound) {
+                    System.out.println("Please re-enter a valid number:");
+                    num = scanner.nextInt();
+                }
+                validInput = true;
+            } catch (InputMismatchException exception) {
+                System.out.println("Invalid input please try again.");
+                scanner.next(); // consumes the invalid token
+            }
+        }
+        return num;
     }
 }
