@@ -266,10 +266,10 @@ public class ImageProcessing {
      */
     public void rotateLeft() {
         APImage rotatedImage = new APImage(processedImage.getHeight(), processedImage.getWidth());
-        for (int y = 0; y < processedImage.getHeight(); y++) {
-            for (int x = 0; x < processedImage.getWidth(); x++) {
+        for (int x = 0; x < processedImage.getWidth(); x++) {
+            for (int y = 0; y < processedImage.getHeight(); y++) {
                 Pixel originalPixel = processedImage.getPixel(x, y);
-                rotatedImage.setPixel(y, x, originalPixel);
+                rotatedImage.setPixel(y, processedImage.getWidth() - 1 - x, originalPixel);
             }
         }
         processedImage = rotatedImage;
@@ -283,9 +283,10 @@ public class ImageProcessing {
         for (int x = 0; x < processedImage.getWidth(); x++) {
             for (int y = 0; y < processedImage.getHeight(); y++) {
                 Pixel originalPixel = processedImage.getPixel(x, y);
-                rotatedImage.setPixel(rotatedImage.getWidth() - 1 - y, rotatedImage.getHeight() - 1 - x, originalPixel);
+                rotatedImage.setPixel(processedImage.getHeight() - 1 - y, x, originalPixel);
             }
         }
+
         processedImage = rotatedImage;
     }
 
