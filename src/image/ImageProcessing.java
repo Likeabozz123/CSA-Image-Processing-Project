@@ -11,12 +11,17 @@ import java.util.Random;
 public class ImageProcessing {
 
     private APImage processedImage;
+    private final ImageProcessingMenu imageProcessingMenu;
+
+    public ImageProcessing() {
+        imageProcessingMenu = new ImageProcessingMenu(this);
+    }
 
     /**
      * Runs the image processing application.
      */
     public void run() {
-        ImageProcessingMenu imageProcessingMenu = new ImageProcessingMenu(this);
+
         String imageName = imageProcessingMenu.selectImage();
         APImage originalImage;
         boolean running;
