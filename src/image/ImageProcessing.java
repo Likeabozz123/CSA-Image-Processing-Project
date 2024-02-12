@@ -96,7 +96,7 @@ public class ImageProcessing {
         System.out.println("16. Enlarge image");
         System.out.println("17. Quit");
 
-        int optionNum = scanner.nextInt();
+        int optionNum = getNumberBetweenBounds(1, 17);
 
         if (optionNum == 1) {
             convertBlackWhite();
@@ -175,6 +175,8 @@ public class ImageProcessing {
             enlargenImage(enlargenFactor);
         }
         if (optionNum == 17) running = false;
+
+
     }
 
     /**
