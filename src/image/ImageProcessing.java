@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class ImageProcessing {
 
     private String imageName;
+    private APImage originalImage;
     private APImage processedImage;
     private boolean running = true;
     private final Scanner scanner = new Scanner(System.in);
@@ -22,9 +23,16 @@ public class ImageProcessing {
     public void run() {
         selectImage();
 
-        APImage originalImage = new APImage("src/resources/" + imageName);
+        try {
+           originalImage = new APImage("src/resources/" + imageName);
+        } catch (NullPointerException exception) {
+            System.out.println("Defaulting to smokey.jpg...");
+            originalImage = new APImage("src/resources/smokey.jpg");
+        }
+
         processedImage = originalImage.clone();
         originalImage.draw();
+        System.out.println("");
 
         do {
             APImage deletedImage = processedImage;
