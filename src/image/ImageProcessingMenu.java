@@ -3,6 +3,9 @@ package image;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * The ImageProcessingMenu class to deal with user input and displaying menus
+ */
 public class ImageProcessingMenu {
 
     public ImageProcessing imageProcessing;
@@ -141,6 +144,10 @@ public class ImageProcessingMenu {
         return running;
     }
 
+    /**
+     * Gets a positive number input, but with error handling
+     * @return a valid input
+     */
     public int getPositiveNumberInput() {
         int num = 10;
 
@@ -161,6 +168,10 @@ public class ImageProcessingMenu {
         return num;
     }
 
+    /**
+     * Gets a number input between two bounds, but with error handling
+     * @return a valid input between the bounds
+     */
     public int getNumberBetweenBounds(int startBound, int endBound) {
 
         int num = 10;
